@@ -1,0 +1,70 @@
+%% Advent of Code, December 3
+
+close all
+clear all
+clc
+
+input = readlines('inputday3');
+
+j=0;
+for i = 1:length(input)
+    
+    letters = num2cell(char(input(i)));
+    le = length(letters);
+    first = {};
+    second = {};
+    for k = 1:le
+        if k <= le/2
+            first(k) = letters(k);
+        else
+            j = j+1;
+            second(j) = letters(k);
+        end
+    end
+    
+    pos = cellfun(@(c) find(strcmp(c, second)), first, 'UniformOutput', false);
+    index = cell2mat(pos);
+    if sum(index) > 0
+        items(i) = second(index(1));
+    end
+    j=0;
+end
+
+a = num2cell(char('a':'z'));
+A = upper(a);
+values = linspace(1,52,52);
+prio = [a, A];
+
+for i = 1:length(items)
+    itemspos(i) = cellfun(@(c) find(strcmp(c, prio)), items(i), 'UniformOutput', false);
+end
+answer = sum(cell2mat(itemspos))
+
+%%
+sum = 0;
+for i = 1:3:length(items)
+    letters1 = num2cell(char(input(i)));
+    letters2 = num2cell(char(input(i+1)));
+    letters3 = num2cell(char(input(i+2)));
+    num1 = {};
+    num2 = {};
+    num3 = {};
+
+    for j = 1:length(letters1)
+    num1(j) = cellfun(@(c) find(strcmp(c, prio)), letters1(j), 'UniformOutput', false);
+    end
+    for j = 1:length(letters2)
+    num2(j) = cellfun(@(c) find(strcmp(c, prio)), letters2(j), 'UniformOutput', false);
+    end
+    for j = 1:length(letters3)
+    num3(j) = cellfun(@(c) find(strcmp(c, prio)), letters3(j), 'UniformOutput', false);
+    end
+    
+    num1 = cell2mat(num1);
+    num2 = cell2mat(num2);
+    num3 = cell2mat(num3);
+    
+    [val,pos]=intersect(num1,num2);
+    [val,pos]=intersect(val,num3);
+    sum = sum+val;
+end
