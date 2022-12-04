@@ -1,0 +1,94 @@
+% Advent of Code, December 4
+
+close all
+clear all
+clc
+
+f = readlines('inputday4');
+
+elf1 = NaN(length(f)-1,5);
+elf2 = NaN(length(f)-1,5);
+
+for i = 1:length(f)
+    s = num2cell(char(f(i)));
+    k = 0; n = 0;
+    
+    for j = 1:length(s) 
+        if strcmpi(s{j},'-') == 1 && k == 0
+            elf1(i,j) = NaN;
+        elseif strcmpi(s{j},',') == 1 && k == 0
+            k = 1;
+        elseif k == 0
+            elf1(i,j) = str2num(cell2mat(s(j))); 
+        end
+        if strcmpi(s{j},'-') == 1 && k == 1
+            n=n+1;
+            elf2(i,n) = NaN;
+        elseif strcmpi(s{j},',') == 0 && k == 1
+            n=n+1;
+            elf2(i,n) = str2num(cell2mat(s(j)));
+        end
+    end
+end
+
+sum = 0; overlap = 0;
+[le, b] = size(elf1);
+% elf11 = NaN(le, 2); elf12 = NaN(le, 2); elf21 = NaN(le, 2); elf22 = NaN(le, 2);
+for i = 1:le
+    k = 0; n = 0;
+    elf11 = []; elf12 = []; elf21 = []; elf22 = [];
+    
+    for j = 1:b
+        if isnan(elf1(i,j)) == 1 
+            k=1;
+        elseif k == 0
+            elf11(j) = elf1(i,j);
+        end
+        if k == 1 && isnan(elf1(i,j)) == 0
+            n=n+1;
+            elf12(n) = elf1(i,j);
+        end
+    end
+    k=0;
+    n=0;
+    for j = 1:b
+        if isnan(elf2(i,j)) == 1 
+            k=1;
+        elseif k == 0
+            elf21(j) = elf2(i,j);
+        end
+        if k == 1 && isnan(elf2(i,j)) == 0
+            n=n+1;
+            elf22(n) = elf2(i,j);
+        end
+    end   
+    
+    if length(elf11) > 1
+        str = sprintf('%d', elf11(1),elf11(2)); elf11 = str2double(str);
+    end
+    if length(elf12) > 1
+        str = sprintf('%d', elf12(1),elf12(2)); elf12 = str2double(str);
+    end
+    if length(elf21) > 1
+        str = sprintf('%d', elf21(1),elf21(2)); elf21 = str2double(str);
+    end
+    if length(elf22) > 1
+        str = sprintf('%d', elf22(1),elf22(2)); elf22 = str2double(str);
+    end
+    
+    if elf11 <= elf21 && elf12 >= elf22
+        sum = sum+1;
+    elseif elf21 <= elf11 && elf22 >= elf12
+        sum = sum+1;
+    end
+  
+    
+    first = linspace(elf11, elf12, (elf12-elf11+1));
+    second = linspace(elf21, elf22, (elf22-elf21+1));
+    [val]=intersect(first,second);
+    
+    if isempty(val) == 0
+        overlap = overlap+1;
+    end
+    
+end
