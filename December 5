@@ -1,0 +1,139 @@
+%% Advent of Code, devember 5
+
+clear all 
+close all
+clc
+
+f = readlines('inputday5');
+crates = {};
+le = length(f)-1;
+
+for i = 1:le
+    s = num2cell(char(f(i)));    
+    n=0;
+    
+    if isempty(s) == 1
+        crates(i-1,:) = [];
+        break
+    else
+        for j = 2:4:length(s)
+            n=n+1;
+            crates(i,n) = s(j);
+        end
+    end
+end
+
+for i = 1:length(crates)+1
+    f(1,:) = [];
+end
+le = length(f)-1;
+
+for i = 1:le
+    s = num2cell(char(f(i))); 
+    k = 0; h = 0;
+    
+    for j = 1:length(s)
+        if isnan(str2double(cell2mat(s(j)))) == 0 &&  k == 0
+            move(i,1) = str2double(cell2mat(s(j)));
+            if isnan(str2double(cell2mat(s(j+1)))) == 0
+                move(i,2) = str2double(cell2mat(s(j+1)));
+                h=1;
+            else move(i,2) = NaN;
+            end
+            k = k+1;
+        elseif isnan(str2double(cell2mat(s(j)))) == 0 &&  k == 1 && h == 0
+            move(i,3) = str2double(cell2mat(s(j)));        
+            k = k+1;
+        elseif isnan(str2double(cell2mat(s(j)))) == 0 &&  k == 1 && h == 1
+            h = 0;
+        elseif isnan(str2double(cell2mat(s(j)))) == 0 &&  k == 2
+            move(i,4) = str2double(cell2mat(s(j)));    
+        end
+    end
+    %str(i) = sprintf('move %i from %i to %i', move(i,1),move(i,2),move(i,3));
+end
+
+
+A = num2cell(char('A':'Z'));
+num = linspace(1,length(A), length(A));
+
+[le, b] = size(crates);
+lines = zeros(le,1);
+
+for i = 1:length(move)
+    if isnan(move(i,2)) == 0
+        str = sprintf('%d', move(i,1), move(i,2));
+        moves(i,1) = str2num(str);
+    else moves(i,1) = move(i,1);
+    end
+    moves(i,2) = move(i,3);
+    moves(i,3) = move(i,4);
+end
+
+line1 = flip(crates(:,1)');
+line2 = flip(crates(:,2)');
+line3 = flip(crates(:,3)');
+line4 = flip(crates(:,4)');
+line5 = flip(crates(:,5)');
+line6 = flip(crates(:,6)');
+line7 = flip(crates(:,7)');
+line8 = flip(crates(:,8)');
+line9 = (flip(crates(:,9)'));
+
+for i = 1:le
+    if strcmpi(line1{end},' ') == 1
+        line1(end) = [];
+    end
+    if strcmpi(line2{end},' ') == 1
+        line2(end) = [];
+    end
+    if strcmpi(line3{end},' ') == 1
+        line3(end) = [];
+    end
+    if strcmpi(line4{end},' ') == 1
+        line4(end) = [];
+    end
+    if strcmpi(line5{end},' ') == 1
+        line5(end) = [];
+    end
+    if strcmpi(line6{end},' ') == 1
+        line6(end) = [];
+    end
+    if strcmpi(line7{end},' ') == 1
+        line7(end) = [];
+    end
+    if strcmpi(line8{end},' ') == 1
+        line8(end) = [];
+    end
+    if strcmpi(line9{end},' ') == 1
+        line9(end) = [];
+    end
+end
+
+lines = {line1, line2, line3, line4, line5, line6, line7, line8, line9};
+linesb = lines;
+
+
+for i = 1:length(moves)    
+    for j = 1:moves(i,1)
+        str = lines{moves(i,2)}(end);
+        lines{moves(i,2)}(end) = [];
+        lines{moves(i,3)}(end+1) = str;
+    end
+end
+
+for i = 1:length(lines)
+    topcrate(i) = lines{i}(end);
+end
+
+%%
+
+for i = 1:length(moves)        
+	str = linesb{moves(i,2)}(end-(moves(i,1)-1):end);
+    linesb{moves(i,3)} = [linesb{moves(i,3)},str];
+    linesb{moves(i,2)}(end-(moves(i,1)-1):end) = [];
+end
+
+for i = 1:length(lines)
+    topcrateb(i) = linesb{i}(end);
+end
