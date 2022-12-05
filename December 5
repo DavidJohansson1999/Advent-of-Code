@@ -126,7 +126,7 @@ for i = 1:length(lines)
     topcrate(i) = lines{i}(end);
 end
 
-%%
+%% Part 2
 
 for i = 1:length(moves)        
 	str = linesb{moves(i,2)}(end-(moves(i,1)-1):end);
