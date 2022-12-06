@@ -34,3 +34,5 @@ for i = num:length(s)
         break 
     end
 end
+
+disp(result)
