@@ -21,10 +21,8 @@ for i = num:length(s)
     m = 0;
     for n = 1:num
         for j = 1:n
-            if isequal(last4(j), last4(n)) == 0
-                if j ~= n
-                    m = m+1;
-                end
+            if isequal(last4(j), last4(n)) == 0 && j ~= n
+                m = m+1;
             end
         end
     end
