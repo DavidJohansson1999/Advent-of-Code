@@ -1,0 +1,42 @@
+%% Advent of Code, devember 6
+
+clear all 
+close all
+clc
+
+f = readlines('inputday6'); f(end) = [];
+s = num2cell(char(f)); 
+
+charnum = 0; 
+last4 = {}; 
+t = 0; 
+num = 14; 
+pairs = (num*(num-1))/2;
+
+for i = num:length(s)
+    last4 = {};
+    
+    if i == 1566
+        a = 4;
+    end
+    
+    for n = (i-(num-1)):i
+        last4 = [last4, s(n)];
+    end
+    
+    m = 0;
+    for n = 1:num
+        for j = 1:n
+            if isequal(last4(j), last4(n)) == 0
+                if j ~= n
+                    m = m+1;
+                end
+            end
+        end
+    end
+    
+    if m == pairs
+        t=t+1;
+        charnum(t) = i;
+    end
+end
