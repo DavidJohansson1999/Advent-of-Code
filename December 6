@@ -7,9 +7,7 @@ clc
 f = readlines('inputday6'); f(end) = [];
 s = num2cell(char(f)); 
 
-charnum = 0; 
 last4 = {}; 
-t = 0; 
 num = 14; 
 pairs = (num*(num-1))/2;
 
@@ -32,7 +30,7 @@ for i = num:length(s)
     end
     
     if m == pairs
-        t=t+1;
-        charnum(t) = i;
+        result = i;
+        break 
     end
 end
