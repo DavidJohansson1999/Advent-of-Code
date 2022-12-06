@@ -16,10 +16,6 @@ pairs = (num*(num-1))/2;
 for i = num:length(s)
     last4 = {};
     
-    if i == 1566
-        a = 4;
-    end
-    
     for n = (i-(num-1)):i
         last4 = [last4, s(n)];
     end
